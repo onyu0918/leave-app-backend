@@ -25,7 +25,7 @@ class JwtAuthenticationFilter(
             return
         }
 
-        println("SecurityContext 인증 상태: ${SecurityContextHolder.getContext().authentication}")
+        println("SecurityContextにおける認証の状態: ${SecurityContextHolder.getContext().authentication}")
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             val token = authHeader.substring(7)
@@ -36,7 +36,7 @@ class JwtAuthenticationFilter(
                     val user = userRepository.findByUsername(username)
                         ?: run {
                             response.status = HttpServletResponse.SC_UNAUTHORIZED
-                            response.writer.write("사용자를 찾을 수 없습니다.")
+                            response.writer.write("ユーザーが見つかりません。")
                             return
                         }
 
@@ -51,12 +51,12 @@ class JwtAuthenticationFilter(
             } catch (e: ExpiredJwtException) {
                 println("JWT expired: ${e.message}")
                 response.status = HttpServletResponse.SC_UNAUTHORIZED
-                response.writer.write("JWT 토큰이 만료되었습니다.")
+                response.writer.write("JWTトークンの期限が切れています。再度ログインしてください。")
                 return
             } catch (e: Exception) {
                 println("JWT error: ${e.message}")
                 response.status = HttpServletResponse.SC_UNAUTHORIZED
-                response.writer.write("JWT 처리 오류: ${e.message}")
+                response.writer.write("JWTの処理中にエラーが発生しました。: ${e.message}")
                 return
             }
         }

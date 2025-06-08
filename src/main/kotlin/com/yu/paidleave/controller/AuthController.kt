@@ -16,11 +16,11 @@ class AuthController(private val userRepository: UserRepository, private val jwt
     @PostMapping("/login")
     fun login(@RequestBody request: LoginRequest): ResponseEntity<Any> {
         val user = userRepository.findByUsername(request.username)
-            ?: return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.")
+            ?: return ResponseEntity.badRequest().body("ユーザーを見つけることができませんでした。")
 
         val passwordEncoder = BCryptPasswordEncoder()
         if (!passwordEncoder.matches(request.password, user.password)) {
-            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.")
+            return ResponseEntity.badRequest().body("入力されたパスワードが正しくありません。")
         }
 
         val token = jwtUtil.generateToken(user.username, user.isAdmin)

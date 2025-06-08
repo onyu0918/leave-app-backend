@@ -9,24 +9,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @ControllerAdvice
 class GlobalExceptionHandler {
 
-    // 🔒 관리자 권한 없음
     @ExceptionHandler(AccessDeniedException::class)
     fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-            .body("⚠️ 관리자 권한이 필요합니다.")
+            .body("⚠️ この操作を行うには管理者権限が必要です。")
     }
 
-    // ❗ 잘못된 요청 (예: IllegalArgumentException)
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body("❗ 잘못된 요청입니다: ${ex.message}")
+            .body("❗ リクエストが正しくありません。: ${ex.message}")
     }
 
-    // 🛠️ 기타 예외
     @ExceptionHandler(Exception::class)
     fun handleGenericException(ex: Exception): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("🚨 서버 오류가 발생했습니다: ${ex.message}")
+            .body("🚨 サーバーでエラーが発生しました。ご迷惑をおかけして申し訳ありません。: ${ex.message}")
     }
 }

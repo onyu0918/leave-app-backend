@@ -14,7 +14,7 @@ class AuthHelper(
         val token = authHeader.removePrefix("Bearer ").trim()
         val username = jwtUtil.extractUsername(token)
         val user = userService.getUserByUsername(username)
-            ?: throw AccessDeniedException("사용자를 찾을 수 없습니다.")
+            ?: throw AccessDeniedException("ユーザーが見つかりません。")
 
         return user.isAdmin
     }

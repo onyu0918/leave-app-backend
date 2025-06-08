@@ -1,6 +1,6 @@
 package com.yu.paidleave.dto
 
 data class LeaveStatusUpdateRequestDto(
-    val status: String,
-    val rejectReason: String? = null
+    val status: Int,
+    val comment: String? = null
 )

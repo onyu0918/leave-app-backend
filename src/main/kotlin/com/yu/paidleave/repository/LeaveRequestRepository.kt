@@ -1,7 +1,6 @@
 package com.yu.paidleave.repository
 
 import com.yu.paidleave.entity.LeaveRequest
-import com.yu.paidleave.entity.LeaveStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -12,7 +11,15 @@ import java.time.LocalDate
 interface LeaveRequestRepository : JpaRepository<LeaveRequest, Long> {
     fun findByUserId(userId: Long): List<LeaveRequest>
 
-    @Query("SELECT l FROM LeaveRequest l WHERE l.startDate >= :startDate")
+    fun countByStatus(status: Int): Int
+
+    fun findAllByStatusNot(status: Int): List<LeaveRequest>
+
+    @Query("""
+        SELECT l FROM LeaveRequest l 
+        WHERE l.startDate >= :startDate 
+        ORDER BY l.createdDate DESC
+    """)
     fun findByStartDateAfter(@Param("startDate") startDate: LocalDate): List<LeaveRequest>
 
     @Query("""
@@ -21,9 +28,10 @@ interface LeaveRequestRepository : JpaRepository<LeaveRequest, Long> {
         WHERE (:status IS NULL OR lr.status = :status)
         AND (:username IS NULL OR LOWER(u.username) LIKE LOWER(CONCAT('%', :username, '%')))
         AND lr.startDate >= :startDate
+        ORDER BY lr.createdDate DESC
     """)
     fun findAllByFilters(
-        @Param("status") status: LeaveStatus?,
+        @Param("status") status: Int?,
         @Param("username") username: String?,
         @Param("startDate") startDate: LocalDate,
         pageable: Pageable
@@ -34,9 +42,10 @@ interface LeaveRequestRepository : JpaRepository<LeaveRequest, Long> {
         JOIN lr.user u
         WHERE (:status IS NULL OR lr.status = :status)
         AND (:username IS NULL OR LOWER(u.username) LIKE LOWER(CONCAT('%', :username, '%')))
+        ORDER BY lr.createdDate DESC
     """)
     fun findAllByFilters(
-        @Param("status") status: LeaveStatus?,
+        @Param("status") status: Int?,
         @Param("username") username: String?,
         pageable: Pageable
     ): Page<LeaveRequest>

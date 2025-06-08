@@ -1,14 +1,18 @@
 package com.yu.paidleave.dto
 
-import com.yu.paidleave.entity.LeaveStatus
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class LeaveRequestResponseDto(
     val id: Long,
     val username: String,
+    val name: String,
     val startDate: LocalDate,
     val endDate: LocalDate,
+    val createdDate: LocalDateTime? = null,
+    val updatedDate: LocalDateTime? = null,
     val reason: String,
-    val status: LeaveStatus,
-    val rejectReason: String? = null
+    val status: Int,
+    val comment: String? = null,
+    val days: Double
 )

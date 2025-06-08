@@ -1,16 +1,19 @@
 package com.yu.paidleave.dto
 
 import com.yu.paidleave.entity.LeaveRequest
-import com.yu.paidleave.dto.LeaveRequestResponseDto
 
 fun LeaveRequest.toResponseDto(): LeaveRequestResponseDto {
     return LeaveRequestResponseDto(
         id = this.id,
         username = this.user.username,
+        name = this.user.name,
         startDate = this.startDate,
         endDate = this.endDate,
+        createdDate = this.createdDate,
+        updatedDate = this.updatedDate,
         reason = this.reason,
         status = this.status,
-        rejectReason = this.rejectReason
+        comment = this.comment,
+        days = this.days
     )
 }

@@ -10,7 +10,7 @@ import javax.crypto.SecretKey
 @Component
 class JwtUtil {
 
-    private val expirationMs = 1000 * 60 * 60 * 10L // 10시간
+    private val expirationMs = 1000 * 60 * 60 * 10L
 
     private val SECRET = "this-is-a-very-very-secret-and-long-key-1234567890"
     private val secretKey: SecretKey = Keys.hmacShaKeyFor(SECRET.toByteArray())
